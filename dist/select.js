@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.19.6 - 2017-04-12T06:30:23.591Z
+ * Version: 0.19.7 - 2017-04-17T18:16:22.838Z
  * License: MIT
  */
 
@@ -180,31 +180,6 @@ var uis = angular.module('ui.select', [])
       height: boundingClientRect.height || element.prop('offsetHeight'),
       top: boundingClientRect.top + ($window.pageYOffset || $document[0].documentElement.scrollTop),
       left: boundingClientRect.left + ($window.pageXOffset || $document[0].documentElement.scrollLeft)
-    };
-  };
-}]);
-
-/**
- * Debounces functions
- *
- * Taken from UI Bootstrap $$debounce source code
- * See https://github.com/angular-ui/bootstrap/blob/master/src/debounce/debounce.js
- *
- */
-uis.factory('$$uisDebounce', ['$timeout', function($timeout) {
-  return function(callback, debounceTime) {
-    var timeoutPromise;
-
-    return function() {
-      var self = this;
-      var args = Array.prototype.slice.call(arguments);
-      if (timeoutPromise) {
-        $timeout.cancel(timeoutPromise);
-      }
-
-      timeoutPromise = $timeout(function() {
-        callback.apply(self, args);
-      }, debounceTime);
     };
   };
 }]);
@@ -1499,7 +1474,7 @@ uis.directive('uiSelect',
   };
 }]);
 
-uis.directive('uiSelectFooter', function(uiSelectConfig){
+uis.directive('uiSelectFooter', ['uiSelectConfig' ,function(uiSelectConfig){
   return {
     templateUrl: function (tElement) {
       // Needed so the uiSelect can detect the transcluded content
@@ -1513,9 +1488,9 @@ uis.directive('uiSelectFooter', function(uiSelectConfig){
     transclude: true,
     replace: true
   };
-});
+}]);
 
-uis.directive('uiSelectHeader', function(uiSelectConfig){
+uis.directive('uiSelectHeader', ['uiSelectConfig' ,function(uiSelectConfig){
   return {
     templateUrl: function (tElement) {
       // Needed so the uiSelect can detect the transcluded content
@@ -1529,7 +1504,7 @@ uis.directive('uiSelectHeader', function(uiSelectConfig){
     transclude: true,
     replace: true
   };
-});
+}]);
 
 uis.directive('uiSelectMatch', ['uiSelectConfig', function(uiSelectConfig) {
   return {
@@ -2349,6 +2324,31 @@ uis.directive('uiSelectSort', ['$timeout', 'uiSelectConfig', 'uiSelectMinErr', f
         element.off('drop', dropHandler);
       });
     }
+  };
+}]);
+
+/**
+ * Debounces functions
+ *
+ * Taken from UI Bootstrap $$debounce source code
+ * See https://github.com/angular-ui/bootstrap/blob/master/src/debounce/debounce.js
+ *
+ */
+uis.factory('$$uisDebounce', ['$timeout', function($timeout) {
+  return function(callback, debounceTime) {
+    var timeoutPromise;
+
+    return function() {
+      var self = this;
+      var args = Array.prototype.slice.call(arguments);
+      if (timeoutPromise) {
+        $timeout.cancel(timeoutPromise);
+      }
+
+      timeoutPromise = $timeout(function() {
+        callback.apply(self, args);
+      }, debounceTime);
+    };
   };
 }]);
 
